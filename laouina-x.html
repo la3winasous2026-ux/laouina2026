@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'Aouina-X</title>
+<style>
+:root{--bg:#f7f3ea;--card:#fff;--ink:#1f2a24;--muted:#6b756e;--g:#1f6f4a;--g2:#e3f1e9;--gold:#c8962e;--line:#e4ddcc}
+@media (prefers-color-scheme:dark){:root{--bg:#121a16;--card:#1b2620;--ink:#eef2ee;--muted:#9aa89f;--g:#4cc38a;--g2:#1f3328;--gold:#e0b04a;--line:#2b3a31}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,sans-serif;line-height:1.6}
+header{background:linear-gradient(135deg,#14503a,#1f6f4a);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:0;z-index:5}
+header h1{font-size:20px;margin:0}header h1 span{color:#f2c35c}
+.langs button{background:rgba(255,255,255,.15);color:#fff;border:0;padding:6px 10px;border-radius:8px;margin-inline-start:4px;font-size:13px}
+.langs button.on{background:#f2c35c;color:#14301f;font-weight:700}
+nav{display:flex;overflow-x:auto;gap:6px;padding:10px 12px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:56px;z-index:4}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--ink);padding:8px 14px;border-radius:999px;font-size:14px}
+nav button.on{background:var(--g);color:#fff;border-color:var(--g)}
+main{max-width:760px;margin:0 auto;padding:14px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.hero{text-align:center;padding:26px 14px}
+.hero h2{margin:0 0 6px;font-size:24px}
+.hero p{color:var(--muted);margin:6px 0}
+.tag{display:inline-block;background:var(--g2);color:var(--g);border-radius:999px;padding:2px 10px;font-size:12px;margin:2px}
+label{display:block;font-size:13px;color:var(--muted);margin:8px 0 3px}
+input,textarea,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:100px;resize:vertical}
+.btn{background:var(--g);color:#fff;border:0;padding:10px 16px;border-radius:10px;font:inherit;font-weight:600;margin-top:10px;margin-inline-end:6px}
+.btn.alt{background:var(--g2);color:var(--g)}
+.btn.warn{background:#b3402f}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1 1 140px}
+.bar{height:10px;background:var(--g2);border-radius:99px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g),var(--gold))}
+.entry h3{margin:0 0 4px;font-size:16px}
+.meta{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{text-align:center}.stat b{font-size:28px;color:var(--g);display:block}
+canvas{width:100%;border-radius:12px;border:1px solid var(--line)}
+pre{background:var(--bg);border:1px solid var(--line);padding:10px;border-radius:10px;overflow:auto;font-size:12px;direction:ltr;text-align:left;white-space:pre-wrap}
+.out{white-space:pre-wrap}
+small.note{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>L'Aouina<span>-X</span></h1>
+  <div class="langs">
+    <button data-l="ar">ع</button><button data-l="en">EN</button><button data-l="fr">FR</button>
+  </div>
+</header>
+<nav id="nav"></nav>
+<main>
+
+<section id="home">
+  <div class="card hero">
+    <h2 data-t="heroTitle"></h2>
+    <p data-t="heroSub"></p>
+    <div><span class="tag" data-t="t1"></span><span class="tag" data-t="t2"></span><span class="tag" data-t="t3"></span></div>
+  </div>
+  <div class="card"><b data-t="howTitle"></b><p data-t="howText"></p></div>
+  <div class="card"><b data-t="privTitle"></b><p data-t="privText"></p></div>
+</section>
+
+<section id="library">
+  <div class="card">
+    <b data-t="addMem"></b>
+    <label data-t="fTitle"></label><input id="mTitle">
+    <label data-t="fText"></label><textarea id="mText"></textarea>
+    <div class="row">
+      <div><label data-t="fCat"></label>
+        <select id="mCat"></select></div>
+      <div><label data-t="fPlace"></label><input id="mPlace"></div>
+      <div><label data-t="fYear"></label><input id="mYear" inputmode="numeric"></div>
+    </div>
+    <button class="btn" id="saveMem" data-t="save"></button>
+  </div>
+  <input id="search" data-ph="search" style="margin-bottom:12px">
+  <div id="list"></div>
+  <div class="card">
+    <button class="btn alt" id="exp" data-t="export"></button>
+    <button class="btn alt" id="impBtn" data-t="import"></button>
+    <input type="file" id="imp" accept=".json" hidden>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="card">
+    <b data-t="aiTitle"></b>
+    <p class="meta" data-t="aiHint"></p>
+    <label data-t="pickEntry"></label>
+    <select id="aiPick"></select>
+    <label data-t="orPaste"></label>
+    <textarea id="aiText"></textarea>
+    <button class="btn" id="runLocal" data-t="runLocal"></button>
+    <button class="btn alt" id="runCloud" data-t="runCloud"></button>
+  </div>
+  <div class="card" id="aiResult" style="display:none"></div>
+</section>
+
+<section id="studio">
+  <div class="card">
+    <b data-t="stTitle"></b>
+    <label data-t="stText"></label>
+    <textarea id="stText"></textarea>
+    <label data-t="stSrc"></label><input id="stSrc">
+    <label data-t="stStyle"></label>
+    <select id="stStyle">
+      <option value="0">🌴 Oasis</option><option value="1">🌙 Night</option><option value="2">☀️ Sand</option>
+    </select>
+    <button class="btn" id="stDraw" data-t="stDraw"></button>
+    <button class="btn alt" id="stFromAi" data-t="stFromAi"></button>
+  </div>
+  <canvas id="cv" width="1080" height="1080"></canvas>
+  <div class="card" style="margin-top:12px">
+    <button class="btn" id="stDl" data-t="stDl"></button>
+    <button class="btn alt" id="stShare" data-t="stShare"></button>
+  </div>
+</section>
+
+<section id="share">
+  <div class="card">
+    <b data-t="shTitle"></b>
+    <p data-t="shText"></p>
+    <label data-t="shUrl"></label><input id="shUrl" placeholder="https://...">
+    <button class="btn" id="shNative" data-t="shNative"></button>
+    <button class="btn alt" id="shWa" data-t="shWa"></button>
+    <button class="btn alt" id="shCopy" data-t="shCopy"></button>
+  </div>
+  <div class="card">
+    <b data-t="embTitle"></b>
+    <p class="meta" data-t="embText"></p>
+    <pre id="embCode"></pre>
+    <button class="btn alt" id="embCopy" data-t="shCopy"></button>
+  </div>
+</section>
+
+<section id="dash">
+  <div class="grid" id="stats"></div>
+  <div class="card"><b data-t="byCat"></b><div id="catBars" style="margin-top:8px"></div></div>
+  <div class="card"><b data-t="byVal"></b><div id="valBars" style="margin-top:8px"></div></div>
+</section>
+
+<section id="settings">
+  <div class="card">
+    <b data-t="setTitle"></b>
+    <p class="meta" data-t="setHint"></p>
+    <label>API Key (Gemini)</label><input id="apiKey" type="password" autocomplete="off">
+    <label>Model</label><input id="apiModel" placeholder="gemini-2.0-flash">
+    <button class="btn" id="saveSet" data-t="save"></button>
+    <button class="btn warn" id="wipe" data-t="wipe"></button>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ================= i18n ================= */
+const T={
+ar:{home:"الرئيسية",library:"المكتبة",ai:"الذكاء",studio:"الاستوديو",share:"المشاركة",dash:"اللوحة",settings:"الإعدادات",
+heroTitle:"من العوينة إلى العالم",heroSub:"ذاكرة تحفظ، وقيم تجمع، وتقنية تمكّن.",t1:"الذاكرة",t2:"القيم",t3:"الوحدة",
+howTitle:"كيف تعمل المنصة؟",howText:"سجّل ذاكرة أو حكاية أو حكمة في المكتبة، ثم حلّل قيمها بالذكاء الاصطناعي، وحوّلها إلى منشور جميل يمكن مشاركته أو تضمينه في أي موقع.",
+privTitle:"الخصوصية",privText:"كل بياناتك محفوظة داخل هاتفك فقط. لا يُرسل شيء إلى أي خادم إلا إذا طلبت أنت التحليل السحابي بمفتاحك الخاص.",
+addMem:"إضافة ذاكرة",fTitle:"العنوان",fText:"النص / الحكاية",fCat:"التصنيف",fPlace:"المكان",fYear:"السنة",save:"حفظ",
+search:"بحث...",export:"تصدير JSON",import:"استيراد JSON",
+cats:["حكاية","حكمة","تراث","فلاحة وواحة","علم ومعرفة","أخرى"],
+aiTitle:"محرك تحليل القيم",aiHint:"تحليل محلي فوري بدون إنترنت، أو تحليل سحابي أعمق بمفتاحك.",pickEntry:"اختر ذاكرة من المكتبة",orPaste:"أو ألصق نصاً",
+runLocal:"تحليل محلي",runCloud:"تحليل سحابي (ذكاء فائق)",
+stTitle:"استوديو المنشورات",stText:"نص المنشور",stSrc:"المصدر / التوقيع",stStyle:"النمط",stDraw:"ارسم",stFromAi:"من آخر تحليل",stDl:"تحميل الصورة",stShare:"مشاركة الصورة",
+shTitle:"مشاركة المنصة",shText:"ضع رابط موقعك بعد نشره، ثم شاركه.",shUrl:"رابط الموقع",shNative:"مشاركة",shWa:"واتساب",shCopy:"نسخ",
+embTitle:"تضمين في موقع آخر",embText:"انسخ هذا الكود وضعه في أي صفحة (Blogger وغيره).",
+byCat:"حسب التصنيف",byVal:"القيم الأكثر حضوراً",
+stMem:"ذكريات",stAn:"تحليلات",stPost:"منشورات",stSh:"مشاركات",
+setTitle:"الذكاء السحابي",setHint:"اختياري. احصل على مفتاح مجاني من Google AI Studio. يبقى المفتاح في هاتفك فقط.",wipe:"مسح كل البيانات",
+empty:"لا توجد ذكريات بعد.",del:"حذف",use:"تحليل",post:"منشور",confirm:"متأكد؟",copied:"تم النسخ",noKey:"أضف المفتاح في الإعدادات أولاً.",
+loading:"جارٍ التحليل...",err:"تعذّر الاتصال: ",nothing:"اكتب نصاً أولاً.",valsFound:"القيم المكتشفة",summary:"خلاصة",noVals:"لم تظهر قيم واضحة؛ جرّب نصاً أطول.",saved:"تم الحفظ",
+},
+en:{home:"Home",library:"Library",ai:"AI",studio:"Studio",share:"Share",dash:"Dashboard",settings:"Settings",
+heroTitle:"From L'Aouina to the world",heroSub:"Memory that preserves, values that unite, technology that empowers.",t1:"Memory",t2:"Values",t3:"Unity",
+howTitle:"How it works",howText:"Record a memory, story or proverb in the library, analyze its values with AI, then turn it into a beautiful post you can share or embed on any site.",
+privTitle:"Privacy",privText:"All your data stays on your phone. Nothing is sent anywhere unless you ask for cloud analysis with your own key.",
+addMem:"Add a memory",fTitle:"Title",fText:"Text / story",fCat:"Category",fPlace:"Place",fYear:"Year",save:"Save",
+search:"Search...",export:"Export JSON",import:"Import JSON",
+cats:["Story","Wisdom","Heritage","Oasis & farming","Knowledge","Other"],
+aiTitle:"Values analysis engine",aiHint:"Instant offline local analysis, or deeper cloud analysis with your key.",pickEntry:"Pick a memory",orPaste:"or paste text",
+runLocal:"Local analysis",runCloud:"Cloud analysis (advanced AI)",
+stTitle:"Post studio",stText:"Post text",stSrc:"Source / signature",stStyle:"Style",stDraw:"Draw",stFromAi:"From last analysis",stDl:"Download image",stShare:"Share image",
+shTitle:"Share the platform",shText:"Paste your site link once published, then share it.",shUrl:"Site URL",shNative:"Share",shWa:"WhatsApp",shCopy:"Copy",
+embTitle:"Embed on another site",embText:"Copy this code into any page (Blogger, etc.).",
+byCat:"By category",byVal:"Most present values",
+stMem:"Memories",stAn:"Analyses",stPost:"Posts",stSh:"Shares",
+setTitle:"Cloud AI",setHint:"Optional. Get a free key from Google AI Studio. The key stays on your phone only.",wipe:"Erase all data",
+empty:"No memories yet.",del:"Delete",use:"Analyze",post:"Post",confirm:"Sure?",copied:"Copied",noKey:"Add your key in Settings first.",
+loading:"Analyzing...",err:"Connection failed: ",nothing:"Write some text first.",valsFound:"Detected values",summary:"Summary",noVals:"No clear values found; try longer text.",saved:"Saved",
+},
+fr:{home:"Accueil",library:"Bibliothèque",ai:"IA",studio:"Studio",share:"Partage",dash:"Tableau",settings:"Réglages",
+heroTitle:"De L'Aouina au monde",heroSub:"Une mémoire qui préserve, des valeurs qui rassemblent, une technologie qui renforce.",t1:"Mémoire",t2:"Valeurs",t3:"Unité",
+howTitle:"Comment ça marche",howText:"Enregistrez un souvenir, un récit ou un proverbe, analysez ses valeurs avec l'IA, puis transformez-le en publication à partager ou intégrer sur n'importe quel site.",
+privTitle:"Confidentialité",privText:"Toutes vos données restent sur votre téléphone. Rien n'est envoyé sauf si vous demandez l'analyse cloud avec votre propre clé.",
+addMem:"Ajouter un souvenir",fTitle:"Titre",fText:"Texte / récit",fCat:"Catégorie",fPlace:"Lieu",fYear:"Année",save:"Enregistrer",
+search:"Rechercher...",export:"Exporter JSON",import:"Importer JSON",
+cats:["Récit","Sagesse","Patrimoine","Oasis et agriculture","Savoir","Autre"],
+aiTitle:"Moteur d'analyse des valeurs",aiHint:"Analyse locale instantanée hors ligne, ou analyse cloud plus poussée avec votre clé.",pickEntry:"Choisir un souvenir",orPaste:"ou coller un texte",
+runLocal:"Analyse locale",runCloud:"Analyse cloud (IA avancée)",
+stTitle:"Studio de publications",stText:"Texte",stSrc:"Source / signature",stStyle:"Style",stDraw:"Dessiner",stFromAi:"Depuis la dernière analyse",stDl:"Télécharger l'image",stShare:"Partager l'image",
+shTitle:"Partager la plateforme",shText:"Collez le lien de votre site une fois publié, puis partagez-le.",shUrl:"URL du site",shNative:"Partager",shWa:"WhatsApp",shCopy:"Copier",
+embTitle:"Intégrer sur un autre site",embText:"Copiez ce code dans n'importe quelle page (Blogger, etc.).",
+byCat:"Par catégorie",byVal:"Valeurs les plus présentes",
+stMem:"Souvenirs",stAn:"Analyses",stPost:"Publications",stSh:"Partages",
+setTitle:"IA cloud",setHint:"Facultatif. Obtenez une clé gratuite sur Google AI Studio. La clé reste sur votre téléphone.",wipe:"Effacer toutes les données",
+empty:"Aucun souvenir pour l'instant.",del:"Supprimer",use:"Analyser",post:"Publier",confirm:"Sûr ?",copied:"Copié",noKey:"Ajoutez votre clé dans Réglages.",
+loading:"Analyse en cours...",err:"Échec de connexion : ",nothing:"Écrivez d'abord un texte.",valsFound:"Valeurs détectées",summary:"Synthèse",noVals:"Aucune valeur claire ; essayez un texte plus long.",saved:"Enregistré",
+}};
+
+/* ================= values engine (offline) ================= */
+const VALUES={
+ solidarity:{ar:"التكافل",en:"Solidarity",fr:"Solidarité",k:["تعاون","تكافل","جار","جيران","مساعدة","تضامن","سوية","جماعة","help","together","neighbor","community","share","solidar","entraide","voisin","ensemble","communaut","partage"]},
+ knowledge:{ar:"العلم والمعرفة",en:"Knowledge",fr:"Savoir",k:["علم","معرفة","تعلم","كتاب","قراءة","مدرسة","حكمة","فقه","learn","knowledge","book","read","school","wisdom","savoir","apprendre","livre","lire","école","sagesse"]},
+ justice:{ar:"العدل",en:"Justice",fr:"Justice",k:["عدل","إنصاف","حق","ظلم","أمانة","صدق","justice","fair","truth","honest","trust","équité","vérité","honnête","confiance"]},
+ sustain:{ar:"الاستدامة",en:"Sustainability",fr:"Durabilité",k:["ماء","واحة","نخل","نخيل","أرض","زراعة","فلاحة","سقي","بيئة","شجر","water","oasis","palm","land","farm","soil","environment","tree","eau","palmier","terre","agricult","sol","arbre","environnement"]},
+ faith:{ar:"الإيمان والروحانية",en:"Faith",fr:"Foi",k:["الله","إيمان","صلاة","مسجد","قرآن","دعاء","رحمة","صبر","شكر","god","faith","prayer","mosque","mercy","patience","gratitude","dieu","foi","prière","mosquée","miséricorde","patience"]},
+ family:{ar:"الأسرة والجذور",en:"Family & roots",fr:"Famille et racines",k:["أسرة","عائلة","أب","أم","جد","جدة","أجداد","قرية","وطن","جذور","family","father","mother","grand","ancestor","village","roots","famille","père","mère","aïeul","village","racines"]},
+ effort:{ar:"العمل والجهد",en:"Hard work",fr:"Effort",k:["عمل","جهد","كد","اجتهاد","صناعة","حرفة","تجارة","work","effort","craft","trade","hard","travail","métier","commerce","artisan"]},
+ unity:{ar:"الوحدة والانفتاح",en:"Unity & openness",fr:"Unité et ouverture",k:["وحدة","أمة","عالم","سلام","حوار","تعايش","إنسان","unity","world","peace","dialogue","human","coexist","unité","monde","paix","dialogue","humain"]}
+};
+function analyzeLocal(text){
+  const t=text.toLowerCase(), res={};
+  for(const [id,v] of Object.entries(VALUES)){
+    let c=0; v.k.forEach(w=>{ let i=-1; while((i=t.indexOf(w.toLowerCase(),i+1))>-1) c++; });
+    if(c) res[id]=c;
+  }
+  return res;
+}
+
+/* ================= state ================= */
+let lang=localStorage.getItem("lx_lang")||"ar";
+const S=()=>JSON.parse(localStorage.getItem("lx_data")||'{"mem":[],"an":0,"post":0,"shr":0,"val":{}}');
+const SV=d=>localStorage.setItem("lx_data",JSON.stringify(d));
+let lastAnalysis="";
+const $=id=>document.getElementById(id);
+const tr=k=>T[lang][k];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ================= UI ================= */
+const TABS=["home","library","ai","studio","share","dash","settings"];
+function applyLang(){
+  document.documentElement.lang=lang; document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+  document.querySelectorAll("[data-t]").forEach(e=>e.textContent=tr(e.dataset.t));
+  document.querySelectorAll("[data-ph]").forEach(e=>e.placeholder=tr(e.dataset.ph));
+  document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.l===lang));
+  const cur=document.querySelector("section.on")?.id||"home";
+  $("nav").innerHTML=TABS.map(x=>`<button data-s="${x}" class="${x===cur?"on":""}">${tr(x)}</button>`).join("");
+  $("nav").querySelectorAll("button").forEach(b=>b.onclick=()=>show(b.dataset.s));
+  $("mCat").innerHTML=tr("cats").map((c,i)=>`<option value="${i}">${c}</option>`).join("");
+  renderList(); renderPick(); renderDash(); renderEmbed();
+}
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===id));
+  $("nav").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.s===id));
+  if(id==="dash") renderDash(); if(id==="ai") renderPick(); window.scrollTo(0,0);
+}
+document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>{lang=b.dataset.l;localStorage.setItem("lx_lang",lang);applyLang();});
+
+/* ---- library ---- */
+function renderList(){
+  const d=S(), q=($("search").value||"").toLowerCase();
+  const items=d.mem.filter(m=>(m.title+" "+m.text+" "+m.place).toLowerCase().includes(q));
+  $("list").innerHTML=items.length?items.map(m=>`
+   <div class="card entry">
+     <h3>${esc(m.title)}</h3>
+     <div class="meta"><span class="tag">${esc(tr("cats")[m.cat]||"")}</span> ${esc(m.place||"")} ${esc(m.year||"")}</div>
+     <p>${esc(m.text)}</p>
+     <button class="btn alt" onclick="useAi('${m.id}')">${tr("use")}</button>
+     <button class="btn alt" onclick="usePost('${m.id}')">${tr("post")}</button>
+     <button class="btn warn" onclick="delMem('${m.id}')">${tr("del")}</button>
+   </div>`).join(""):`<div class="card meta">${tr("empty")}</div>`;
+}
+$("search").oninput=renderList;
+$("saveMem").onclick=()=>{
+  const title=$("mTitle").value.trim(), text=$("mText").value.trim();
+  if(!title&&!text) return alert(tr("nothing"));
+  const d=S(); d.mem.unshift({id:Date.now().toString(36),title:title||text.slice(0,30),text,cat:+$("mCat").value,place:$("mPlace").value.trim(),year:$("mYear").value.trim()});
+  SV(d); ["mTitle","mText","mPlace","mYear"].forEach(i=>$(i).value=""); renderList(); renderPick(); renderDash(); alert(tr("saved"));
+};
+window.delMem=id=>{ if(!confirm(tr("confirm"))) return; const d=S(); d.mem=d.mem.filter(m=>m.id!==id); SV(d); renderList(); renderPick(); renderDash(); };
+window.useAi=id=>{ const m=S().mem.find(x=>x.id===id); show("ai"); $("aiPick").value=id; $("aiText").value=m.title+"\n"+m.text; };
+window.usePost=id=>{ const m=S().mem.find(x=>x.id===id); show("studio"); $("stText").value=m.text.slice(0,260); $("stSrc").value=m.title+(m.place?" — "+m.place:""); draw(); };
+$("exp").onclick=()=>{ const b=new Blob([JSON.stringify(S(),null,1)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="laouina-x-backup.json"; a.click(); };
+$("impBtn").onclick=()=>$("imp").click();
+$("imp").onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const j=JSON.parse(r.result); if(j&&Array.isArray(j.mem)){ SV(Object.assign({mem:[],an:0,post:0,shr:0,val:{}},j)); applyLang(); alert(tr("saved")); } }catch(_){} }; r.readAsText(f); };
+
+/* ---- AI ---- */
+function renderPick(){
+  const d=S();
+  $("aiPick").innerHTML=`<option value="">—</option>`+d.mem.map(m=>`<option value="${m.id}">${esc(m.title)}</option>`).join("");
+}
+$("aiPick").onchange=()=>{ const m=S().mem.find(x=>x.id===$("aiPick").value); if(m) $("aiText").value=m.title+"\n"+m.text; };
+function showResult(html){ const r=$("aiResult"); r.style.display="block"; r.innerHTML=html; }
+$("runLocal").onclick=()=>{
+  const text=$("aiText").value.trim(); if(!text) return alert(tr("nothing"));
+  const res=analyzeLocal(text), ids=Object.keys(res).sort((a,b)=>res[b]-res[a]);
+  const d=S(); d.an++; ids.forEach(i=>d.val[i]=(d.val[i]||0)+res[i]); SV(d);
+  if(!ids.length){ showResult(`<b>${tr("valsFound")}</b><p>${tr("noVals")}</p>`); return; }
+  const max=res[ids[0]];
+  const names=ids.slice(0,3).map(i=>VALUES[i][lang]).join(" • ");
+  lastAnalysis=names+" — "+text.replace(/\s+/g," ").slice(0,160);
+  showResult(`<b>${tr("valsFound")}</b>`+ids.map(i=>`<div style="margin-top:8px">${VALUES[i][lang]}<div class="bar"><i style="width:${Math.round(res[i]/max*100)}%"></i></div></div>`).join("")+`<p class="meta">${tr("summary")}: ${esc(names)}</p>`);
+};
+$("runCloud").onclick=async()=>{
+  const text=$("aiText").value.trim(); if(!text) return alert(tr("nothing"));
+  const key=localStorage.getItem("lx_key"); if(!key){ show("settings"); return alert(tr("noKey")); }
+  const model=localStorage.getItem("lx_model")||"gemini-2.0-flash";
+  const langName={ar:"Arabic",en:"English",fr:"French"}[lang];
+  const prompt=`You analyze oral memories, stories and wisdom from a Moroccan oasis community. Respond in ${langName}. For the text below give: 1) the 3 to 5 core human and ethical values, each with one sentence of evidence from the text; 2) a short summary of the lesson; 3) one inspiring sentence (max 30 words) suitable for a social media post. Be faithful to the text and do not invent facts.\n\nTEXT:\n${text}`;
+  showResult(`<p>${tr("loading")}</p>`);
+  try{
+    const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+    const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||r.status);
+    const out=j.candidates?.[0]?.content?.parts?.map(p=>p.text).join("")||"";
+    lastAnalysis=out.split("\n").filter(Boolean).pop()||out.slice(0,200);
+    const d=S(); d.an++; SV(d);
+    showResult(`<div class="out">${esc(out)}</div>`);
+  }catch(e){ showResult(`<p>${tr("err")}${esc(e.message)}</p>`); }
+};
+
+/* ---- studio ---- */
+const STY=[{a:"#14503a",b:"#1f6f4a",t:"#ffffff",g:"#f2c35c"},{a:"#0d1b2a",b:"#1b3a4b",t:"#f1f5f9",g:"#f2c35c"},{a:"#f3e3c3",b:"#e6c98f",t:"#2b2012",g:"#14503a"}];
+function draw(){
+  const c=$("cv"),x=c.getContext("2d"),s=STY[+$("stStyle").value],W=1080;
+  const g=x.createLinearGradient(0,0,W,W); g.addColorStop(0,s.a); g.addColorStop(1,s.b); x.fillStyle=g; x.fillRect(0,0,W,W);
+  x.strokeStyle=s.g; x.lineWidth=6; x.strokeRect(40,40,W-80,W-80);
+  const rtl=lang==="ar"||/[\u0600-\u06FF]/.test($("stText").value);
+  x.direction=rtl?"rtl":"ltr"; x.textAlign="center"; x.fillStyle=s.t;
+  const text=$("stText").value.trim()||"—"; let size=64; let lines;
+  const wrap=()=>{ x.font=`bold ${size}px system-ui,Tahoma,sans-serif`; const w=text.split(/\s+/); lines=[]; let cur=""; w.forEach(o=>{ const t=cur?cur+" "+o:o; if(x.measureText(t).width>W-240&&cur){lines.push(cur);cur=o}else cur=t }); lines.push(cur); };
+  wrap(); while(lines.length*size*1.45>W-460&&size>28){size-=4;wrap();}
+  const total=lines.length*size*1.45; let y=(W-total)/2+size;
+  lines.forEach(l=>{x.fillText(l,W/2,y);y+=size*1.45;});
+  x.fillStyle=s.g; x.font="bold 34px system-ui,Tahoma,sans-serif"; x.fillText($("stSrc").value||"",W/2,W-190);
+  x.font="bold 40px system-ui,sans-serif"; x.direction="ltr"; x.fillText("L'Aouina-X",W/2,W-110);
+  x.fillStyle=s.t; x.globalAlpha=.7; x.font="26px system-ui,sans-serif"; x.fillText("Memory • Values • Unity",W/2,W-72); x.globalAlpha=1;
+}
+$("stDraw").onclick=draw; $("stStyle").onchange=draw;
+$("stFromAi").onclick=()=>{ if(lastAnalysis){$("stText").value=lastAnalysis.slice(0,260); draw();} else alert(tr("nothing")); };
+const blobOf=()=>new Promise(r=>$("cv").toBlob(r,"image/png"));
+$("stDl").onclick=async()=>{ draw(); const b=await blobOf(); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="laouina-x-post.png"; a.click(); const d=S(); d.post++; SV(d); };
+$("stShare").onclick=async()=>{ draw(); const b=await blobOf(); const f=new File([b],"laouina-x-post.png",{type:"image/png"});
+  const d=S(); d.post++; d.shr++; SV(d);
+  if(navigator.canShare&&navigator.canShare({files:[f]})) navigator.share({files:[f],title:"L'Aouina-X"}).catch(()=>{});
+  else $("stDl").click(); };
+
+/* ---- share ---- */
+function url(){ return $("shUrl").value.trim()||location.href; }
+$("shNative").onclick=()=>{ const d=S(); d.shr++; SV(d); if(navigator.share) navigator.share({title:"L'Aouina-X",text:tr("heroTitle"),url:url()}).catch(()=>{}); else $("shCopy").click(); };
+$("shWa").onclick=()=>{ const d=S(); d.shr++; SV(d); window.open("https://wa.me/?text="+encodeURIComponent(tr("heroTitle")+" — "+url()),"_blank"); };
+$("shCopy").onclick=()=>{ navigator.clipboard?.writeText(url()); alert(tr("copied")); };
+function renderEmbed(){ $("embCode").textContent=`<iframe src="${url()}" width="100%" height="650" style="border:0;border-radius:12px" loading="lazy" title="L'Aouina-X"></iframe>`; }
+$("shUrl").oninput=renderEmbed;
+$("embCopy").onclick=()=>{ navigator.clipboard?.writeText($("embCode").textContent); alert(tr("copied")); };
+
+/* ---- dashboard ---- */
+function bars(rows){ const max=Math.max(1,...rows.map(r=>r[1])); return rows.map(r=>`<div>${esc(r[0])} <small class="note">(${r[1]})</small><div class="bar"><i style="width:${Math.round(r[1]/max*100)}%"></i></div></div>`).join("")||`<span class="meta">—</span>`; }
+function renderDash(){
+  const d=S();
+  $("stats").innerHTML=[["stMem",d.mem.length],["stAn",d.an],["stPost",d.post],["stSh",d.shr]].map(([k,v])=>`<div class="card stat"><b>${v}</b>${tr(k)}</div>`).join("");
+  const cats=tr("cats").map((c,i)=>[c,d.mem.filter(m=>m.cat===i).length]).filter(r=>r[1]);
+  $("catBars").innerHTML=bars(cats);
+  const vals=Object.entries(d.val||{}).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([i,n])=>[VALUES[i]?.[lang]||i,n]);
+  $("valBars").innerHTML=bars(vals);
+}
+
+/* ---- settings ---- */
+$("apiKey").value=localStorage.getItem("lx_key")||""; $("apiModel").value=localStorage.getItem("lx_model")||"";
+$("saveSet").onclick=()=>{ localStorage.setItem("lx_key",$("apiKey").value.trim()); localStorage.setItem("lx_model",$("apiModel").value.trim()); alert(tr("saved")); };
+$("wipe").onclick=()=>{ if(confirm(tr("confirm"))){ localStorage.removeItem("lx_data"); applyLang(); } };
+
+/* ---- init ---- */
+document.getElementById("home").classList.add("on");
+applyLang(); $("stText").value="الأرض أمانة، والماء حياة، والجماعة قوة."; $("stSrc").value="L'Aouina"; draw();
+</script>
+</body>
+</html>
