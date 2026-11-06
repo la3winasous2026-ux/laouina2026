@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'Aouina-X</title>
+<meta name="description" content="L'Aouina-X — المنصة العالمية للذاكرة والحكمة والقيم والوحدة">
+<style>
+:root{--bg:#0f1b2d;--bg2:#16263d;--card:#1b2f4b;--ink:#f4efe3;--muted:#b9c2d0;--gold:#d8b25a;--green:#4fb286;--line:#2b4467}
+@media (prefers-color-scheme: light){
+:root{--bg:#faf6ec;--bg2:#f1ead8;--card:#fffdf7;--ink:#1c2636;--muted:#566176;--gold:#a67c1f;--green:#1f7a57;--line:#ded3b8}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",system-ui,sans-serif;line-height:1.8;font-size:17px}
+a{color:inherit}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px}
+.logo{font-weight:800;color:var(--gold);letter-spacing:.5px;font-size:20px;text-decoration:none;white-space:nowrap}
+nav{display:flex;gap:18px;overflow-x:auto;font-size:14px;white-space:nowrap;order:3;width:100%;padding-top:4px;border-top:1px solid var(--line);line-height:1.6}
+nav a{flex:0 0 auto}
+nav a{text-decoration:none;color:var(--muted)}
+nav a:hover{color:var(--gold)}
+.lang{display:flex;gap:6px}
+.lang button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:2px 9px;cursor:pointer;font:inherit;font-size:13px}
+.lang button.on{background:var(--gold);color:#111;border-color:var(--gold)}
+.hero{padding:64px 20px 56px;text-align:center;background:radial-gradient(circle at 50% 0,var(--bg2),var(--bg) 70%)}
+.hero h1{margin:0;font-size:clamp(34px,8vw,60px);color:var(--gold)}
+.hero h2{margin:6px 0 18px;font-weight:600;font-size:clamp(18px,4vw,26px)}
+.hero p{max-width:640px;margin:0 auto 24px;color:var(--muted)}
+.btn{display:inline-block;background:var(--gold);color:#111;padding:10px 22px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:700}
+section{padding:46px 18px;max-width:980px;margin:0 auto}
+section>h3{font-size:26px;margin:0 0 6px;color:var(--gold)}
+section>p.lead{margin:0 0 22px;color:var(--muted)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h4{margin:0 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.num{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;align-items:center;justify-content:center;font-weight:700;margin-bottom:8px}
+.band{background:var(--bg2)}
+.assistant{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+textarea{width:100%;min-height:90px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:10px;font:inherit;resize:vertical}
+#out{margin-top:14px;white-space:pre-wrap;color:var(--ink)}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+ol.road{padding-inline-start:22px}
+ol.road li{margin-bottom:8px}
+footer{text-align:center;padding:34px 18px;color:var(--muted);border-top:1px solid var(--line);font-size:15px}
+footer strong{color:var(--gold)}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#top">L'Aouina-X</a>
+  <nav>
+    <a href="#spaces" data-i18n="n1"></a>
+    <a href="#shield" data-i18n="n2"></a>
+    <a href="#assistant" data-i18n="n3"></a>
+    <a href="#roadmap" data-i18n="n4"></a>
+  </nav>
+  <div class="lang">
+    <button data-l="ar">ع</button><button data-l="fr">FR</button><button data-l="en">EN</button>
+  </div>
+</header>
+
+<div class="hero" id="top">
+  <h1>L'Aouina-X</h1>
+  <h2 data-i18n="sub"></h2>
+  <p data-i18n="slogan"></p>
+  <a class="btn" href="#shield" data-i18n="cta"></a>
+</div>
+
+<section id="spaces">
+  <h3 data-i18n="s_t"></h3>
+  <p class="lead" data-i18n="s_l"></p>
+  <div class="grid" id="spaceGrid"></div>
+</section>
+
+<div class="band">
+<section id="shield">
+  <h3 data-i18n="h_t"></h3>
+  <p class="lead" data-i18n="h_l"></p>
+  <div class="grid" id="shieldGrid"></div>
+</section>
+</div>
+
+<section id="assistant">
+  <h3 data-i18n="a_t"></h3>
+  <p class="lead" data-i18n="a_l"></p>
+  <div class="assistant">
+    <textarea id="claim" data-ph="a_ph"></textarea>
+    <p style="margin:12px 0 0"><button class="btn" id="check" data-i18n="a_b"></button></p>
+    <div id="out"></div>
+    <p class="note" data-i18n="a_n"></p>
+  </div>
+</section>
+
+<div class="band">
+<section id="roadmap">
+  <h3 data-i18n="r_t"></h3>
+  <ol class="road" id="roadList"></ol>
+</section>
+</div>
+
+<footer>
+  <p><strong data-i18n="f1"></strong></p>
+  <p data-i18n="f2"></p>
+</footer>
+
+<script>
+var T={
+ar:{dir:"rtl",n1:"الفضاءات",n2:"تحصين الوعي",n3:"المساعد",n4:"الخارطة",
+sub:"المنصة العالمية للذاكرة والحكمة والقيم والوحدة",
+slogan:"حيث تلتقي الحكمة بالعلم، وتتحاور الحضارات، ويخدم الذكاء الاصطناعي الإنسان.",
+cta:"تحصين الوعي الجماعي",
+s_t:"فضاءات المنصة",s_l:"مفتوحة لجميع الثقافات واللغات، باحترام الاختلاف والتحقق العلمي.",
+spaces:[["مكتبة الحكمة الإنسانية","كتب وأقوال ودراسات في الفلسفة والأخلاق، بمراجع موثقة."],["ذاكرة الحضارات والتاريخ","توثيق التراث والذاكرة الشفوية والتاريخ الإنساني."],["المساعد الفكري","شرح المفاهيم، مقارنة الأفكار، وتوليد الأسئلة البحثية."],["مجلس المفكرين","حوار ومقالات ومناظرات علمية وأخلاقية منضبطة."],["مختبر التنمية والسلام","مبادرات التنمية المستدامة والتربية والبيئة والتعايش."]],
+h_t:"تحصين الوعي الجماعي",
+h_l:"الوعي الجماعي هو قدرة المجتمع على فهم واقعه، وفحص ما يُعرض عليه، والتمييز بين الحقيقة والتضليل، واتخاذ مواقف مسؤولة دون خضوع للتعصب أو الخوف أو التلاعب.",
+shield:[["التفكير المستقل","لا سلطة للفكرة دون حجة، ولا تُقبل دعوى لمجرد مصدرها أو كثرة ترديدها."],["المعرفة الموثقة","كل معلومة تُنسب إلى مصدرها، وتُفرَّق فيها الحقيقة عن الرأي والتقدير."],["الأخلاق","لا قيمة للمعرفة دون أخلاق، ولا يُستعمل العلم لإيذاء الناس أو خداعهم."],["سيادة القانون","احترام الحقوق والواجبات في العالم الواقعي والرقمي على السواء."],["الذاكرة الثقافية","حفظ التراث والتجارب ليتعلم المجتمع من تاريخه ولا يكرر أخطاءه."],["كرامة الإنسان","لا تقدّم دون كرامة الإنسان، ولا حوار دون احترام المختلف."]],
+a_t:"المساعد الفكري",a_l:"اكتب خبراً أو ادعاءً يصلك، وسيعرض عليك أسئلة الفحص قبل أن تصدقه أو تنشره.",
+a_ph:"الصق هنا الخبر أو الادعاء…",a_b:"افحص",
+a_n:"واجهة تجريبية غير متصلة بمحرك ذكاء اصطناعي بعد؛ تعطي قائمة فحص ثابتة.",
+a_e:"اكتب ادعاءً أولاً.",a_h:"ادعاء للفحص:",
+checks:["من المصدر الأصلي؟ وهل هو معروف ويمكن الوصول إليه؟","هل هناك دليل قابل للتحقق، أم مجرد تأكيد وانتشار؟","هل تؤكده مصادر مستقلة أخرى؟","ما تاريخه وسياقه؟ وهل اقتُطع من سياقه؟","هل يثير خوفاً أو غضباً مبالغاً فيه ليدفعني إلى المشاركة السريعة؟","من المستفيد من انتشاره؟","هل يمكنني التريث قبل التصديق أو النشر؟"],
+r_t:"خارطة الإطلاق",road:["تصميم الهوية والواجهة النهائية.","نشر الموقع مجاناً على GitHub Pages.","ربط المساعد الذكي بمحرك آمن مع حدود استخدام (دون وضع المفاتيح في ملفات الموقع).","حسابات المساهمين ونظام نشر المقالات.","الإطلاق واستقطاب المفكرين والباحثين وأهل العلم."],
+f1:"لا سلطة للفكرة دون حجة، ولا قيمة للمعرفة دون أخلاق، ولا تقدم دون كرامة الإنسان.",f2:"L'Aouina-X — مبادرة إنسانية مستقلة"},
+fr:{dir:"ltr",n1:"Espaces",n2:"Conscience",n3:"Assistant",n4:"Feuille de route",
+sub:"Plateforme mondiale de la mémoire, de la sagesse, des valeurs et de l'unité",
+slogan:"Là où la sagesse rencontre la science, où les civilisations dialoguent et où l'IA sert l'être humain.",
+cta:"Immuniser la conscience collective",
+s_t:"Espaces de la plateforme",s_l:"Ouverte à toutes les cultures et langues, dans le respect des différences et la vérification scientifique.",
+spaces:[["Bibliothèque de la sagesse","Livres, citations et études de philosophie et d'éthique, avec références vérifiables."],["Mémoire des civilisations","Documentation du patrimoine, de la mémoire orale et de l'histoire humaine."],["Assistant intellectuel","Expliquer des concepts, comparer des idées, générer des questions de recherche."],["Conseil des penseurs","Dialogue, articles et débats scientifiques et éthiques encadrés."],["Laboratoire développement et paix","Développement durable, éducation, environnement et coexistence."]],
+h_t:"Immuniser la conscience collective",
+h_l:"La conscience collective est la capacité d'une société à comprendre sa réalité, examiner ce qu'on lui présente, distinguer vérité et manipulation, et agir de façon responsable sans céder au fanatisme, à la peur ou à la manipulation.",
+shield:[["Pensée indépendante","Aucune idée sans argument ; une affirmation ne vaut ni par sa source ni par sa répétition."],["Savoir documenté","Chaque information renvoie à sa source ; faits et opinions sont distingués."],["Éthique","Le savoir sans éthique n'a pas de valeur ; il ne sert ni à nuire ni à tromper."],["État de droit","Mêmes droits et devoirs dans le monde réel et numérique."],["Mémoire culturelle","Préserver le patrimoine pour apprendre de l'histoire et ne pas répéter ses erreurs."],["Dignité humaine","Pas de progrès sans dignité, pas de dialogue sans respect de l'autre."]],
+a_t:"Assistant intellectuel",a_l:"Collez une information ou une affirmation reçue ; l'assistant propose les questions à poser avant d'y croire ou de la partager.",
+a_ph:"Collez ici l'information ou l'affirmation…",a_b:"Vérifier",
+a_n:"Interface de démonstration, pas encore connectée à un moteur d'IA ; elle donne une liste de vérification fixe.",
+a_e:"Écrivez d'abord une affirmation.",a_h:"Affirmation à examiner :",
+checks:["Quelle est la source d'origine ? Est-elle connue et accessible ?","Existe-t-il une preuve vérifiable, ou seulement des affirmations répétées ?","D'autres sources indépendantes la confirment-elles ?","Quelle est sa date et son contexte ? A-t-elle été sortie de son contexte ?","Cherche-t-elle à provoquer peur ou colère pour me pousser à partager vite ?","Qui profite de sa diffusion ?","Puis-je attendre avant de croire ou de partager ?"],
+r_t:"Feuille de route",road:["Identité visuelle et interface finale.","Publication gratuite sur GitHub Pages.","Connexion de l'assistant IA via un serveur sécurisé avec limites d'usage (aucune clé dans les fichiers publics).","Comptes de contributeurs et système de publication d'articles.","Lancement et accueil des penseurs, chercheurs et savants."],
+f1:"Pas d'autorité de l'idée sans argument, pas de valeur du savoir sans éthique, pas de progrès sans dignité humaine.",f2:"L'Aouina-X — initiative humanitaire indépendante"},
+en:{dir:"ltr",n1:"Spaces",n2:"Awareness",n3:"Assistant",n4:"Roadmap",
+sub:"The Global Platform for Memory, Wisdom, Values and Unity",
+slogan:"Where wisdom meets science, civilizations converse, and AI serves humanity.",
+cta:"Fortifying Collective Awareness",
+s_t:"Platform spaces",s_l:"Open to all cultures and languages, with respect for difference and scholarly verification.",
+spaces:[["Library of Human Wisdom","Books, sayings and studies in philosophy and ethics, with verifiable references."],["Memory of Civilizations","Documenting heritage, oral memory and human history."],["Intellectual Assistant","Explain concepts, compare ideas, generate research questions."],["Council of Thinkers","Moderated dialogue, essays and scholarly and ethical debates."],["Development & Peace Lab","Sustainable development, education, environment and coexistence."]],
+h_t:"Fortifying Collective Awareness",
+h_l:"Collective awareness is a society's ability to understand its reality, examine what it is shown, tell truth from manipulation, and act responsibly without yielding to fanaticism, fear or manipulation.",
+shield:[["Independent thinking","No idea has authority without argument; a claim is not true because of its source or repetition."],["Documented knowledge","Every piece of information points to its source; fact is separated from opinion."],["Ethics","Knowledge without ethics has no value; it must never be used to harm or deceive."],["Rule of law","The same rights and duties in the real and the digital world."],["Cultural memory","Preserve heritage so society learns from history and avoids repeating mistakes."],["Human dignity","No progress without dignity, no dialogue without respect for others."]],
+a_t:"Intellectual Assistant",a_l:"Paste a claim you received; the assistant lists the questions to ask before believing or sharing it.",
+a_ph:"Paste the claim here…",a_b:"Check",
+a_n:"Demo interface, not yet connected to an AI engine; it gives a fixed checklist.",
+a_e:"Please enter a claim first.",a_h:"Claim under review:",
+checks:["Who is the original source? Is it known and reachable?","Is there verifiable evidence, or just repeated assertion?","Do other independent sources confirm it?","What are its date and context? Was it taken out of context?","Does it provoke fear or anger to push me to share quickly?","Who benefits from its spread?","Can I pause before believing or sharing?"],
+r_t:"Roadmap",road:["Final visual identity and interface.","Free publication on GitHub Pages.","Connect the AI assistant through a secure backend with usage limits (no keys in public files).","Contributor accounts and an article publishing system.","Launch and invite thinkers, researchers and scholars."],
+f1:"No authority for an idea without argument, no value for knowledge without ethics, no progress without human dignity.",f2:"L'Aouina-X — independent humanitarian initiative"}
+};
+var lang="ar";
+try{lang=localStorage.getItem("lx_lang")||"ar"}catch(e){}
+if(!T[lang])lang="ar";
+function card(h,p,i){return '<div class="card">'+(i!=null?'<span class="num">'+(i+1)+'</span>':'')+'<h4>'+h+'</h4><p>'+p+'</p></div>'}
+function render(){
+  var t=T[lang];
+  document.documentElement.lang=lang;document.documentElement.dir=t.dir;
+  document.querySelectorAll("[data-i18n]").forEach(function(e){e.textContent=t[e.getAttribute("data-i18n")]});
+  document.querySelectorAll("[data-ph]").forEach(function(e){e.placeholder=t[e.getAttribute("data-ph")]});
+  document.getElementById("spaceGrid").innerHTML=t.spaces.map(function(s){return card(s[0],s[1])}).join("");
+  document.getElementById("shieldGrid").innerHTML=t.shield.map(function(s,i){return card(s[0],s[1],i)}).join("");
+  document.getElementById("roadList").innerHTML=t.road.map(function(r){return "<li>"+r+"</li>"}).join("");
+  document.querySelectorAll(".lang button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-l")===lang)});
+  document.getElementById("out").textContent="";
+}
+document.querySelectorAll(".lang button").forEach(function(b){b.onclick=function(){lang=b.getAttribute("data-l");try{localStorage.setItem("lx_lang",lang)}catch(e){}render()}});
+document.getElementById("check").onclick=function(){
+  var t=T[lang],v=document.getElementById("claim").value.trim(),o=document.getElementById("out");
+  if(!v){o.textContent=t.a_e;return}
+  o.textContent=t.a_h+"\n« "+v+" »\n\n"+t.checks.map(function(c,i){return (i+1)+". "+c}).join("\n");
+};
+render();
+</script>
+</body>
+</html>
